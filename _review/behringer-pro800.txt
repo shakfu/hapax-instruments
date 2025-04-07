@@ -1,0 +1,204 @@
+############# Pro 800 #############
+VERSION 1 # Currently, this should only be 1.
+
+###### DEFINITIONS
+
+# Supports all alphanumeric ASCII, and ' ', '_', '-', '+' - can also be NULL
+TRACKNAME PRO 800
+
+# Can be POLY, DRUM, MPE, or NULL
+TYPE POLY
+
+# Can be A, B, C, D, USBD, USBH, CVGx (x between 1&4), CVx, Gx, or NULL
+OUTPORT NULL
+
+# Can be x (between 1-16), or NULL -- this is ignored if output port is not MIDI
+OUTCHAN NULL
+
+# Can be NONE, ALLACTIVE, A, B, USBH, USBD, CVG, or NULL
+INPORT NULL
+
+# Can be x (between 1-16), ALL, or NULL. This definition will be ignored if INPORT is NONE, ALLACTIVE or CVG
+INCHAN ALL
+
+# DRUMLANES
+# Syntax: ROW:TRIG:CHAN:NOTENUMBER NAME
+# ROW must be between 1 and 8
+# TRIG can be between 0 and 127, or NULL
+# CHAN can be a number between 1 and 16, Gx, CVx, CVGx (x between 1 and 4), or NULL
+# NOTENUMBER can be between 0 and 127, or NULL
+# NAME supports all alphanumeric ASCII, and ' ', '_', '-', '+' - can also be NULL
+# Please note this section will be discarded for tracks which are not DRUM tracks
+[DRUMLANES]
+[/DRUMLANES]
+
+
+# PC
+# Syntax: NUMBER NAME
+# number must be either:
+#   - A number (for simple PC)
+#   - Three numbers, delimited by ':', which represent PC:MSB:LSB. You can put 'NULL' to not set the MSB/LSB.
+# PC must be between 1...128
+# MSB/LSB must be between 0...127
+[PC]
+1 INIT
+1:1:NULL B01
+[/PC]
+
+# CC
+# Syntax: CC_NUMBER NAME or CC_NUMBER:DEFAULT=xx NAME
+# DEFAULT_VALUE must be a valid number between 0 and 127
+
+[CC]
+
+0 Banksel
+1 ModWheel
+2 Breath
+3 MasterTune
+6 NRPNDataMSB
+7 Mainvolume
+8 OSCAFreq
+9 OSCAVol
+10 OSCAPW
+11 OSCBFreq
+12 OSCBVol
+13 OSCBPW
+14 OSCBFine
+15 VCFFreq
+16 VCFReso
+17 VCFENVamount
+18 VCFRel
+19 VCFSus
+20 VCFDec
+21 VCFAtck
+22 VCARel
+23 VCASus
+24 VCADec
+25 VCAAtck
+26 PmodFilterEnvamount
+27 PmodOSCBamount
+28 LFOFreq
+29 LFOAmount
+30 Glide
+31 VCAVel
+32 VCFVel
+33 Moddelay
+34 VibFreq
+35 VibAmt
+36 UnisonDetune
+37 Noise
+38 NRPNDataLSB
+39 VCAAftertouch
+40 VCFAftertouch
+48 OSCASaw
+49 OSCASaw
+50 OSCASquare
+51 OSCBSaw
+52 OSBBTri
+53 OSBBSquare
+54 OSCBSync
+55 PmodFreqA
+56 PmodVCF
+57 LFOShape
+58 LFOSpeed
+59 LFOTargets
+60 VCFKeyboard
+61 VCFENVExp
+62 VCFENVSpeed
+63 VCAENVExp
+64 Sustainpedal
+65 Unison
+66 Bendertarget
+67 ModwheelAmount
+68 ChromaticPitchA
+69 ChromaticPitchB
+70 ModwheelTarget
+71 VibratoTarget
+72 VCAENVSpeed
+73 ArpMode
+74 LFODestFreq
+75 LFODestFilter
+76 LFODestPWM
+80 OSCAFreq
+81 OSCAVol
+82 OSCAPW
+83 OSCBFreq
+84 OSCBVol
+85 OSCBPW
+86 OSCBFine
+87 VCFFreq
+88 VCFReso
+89 VCFENVamount
+90 VCFRel
+91 VCFSus
+92 VCFDec
+93 VCFAtck
+94 VCARel
+95 VCASus
+96 NRPNDataincrement
+97 NRPNDatadecrement
+98 NRPNParamLSB
+99 NRPNParamMSB
+100 VCADec
+101 VCAAtck
+102 PmodFilterEnvamount
+103 PmodOSCBamount
+104 LFOFreq
+105 LFOAmount
+106 Glide
+107 VCAVel
+108 VCFVel
+109 Moddelay
+110 VibFreq
+111 VibAmt
+112 UnisonDetune
+113 Noise
+114 VCAAftertouch
+115 VCFAftertouch
+116 LFOAftertouch
+120 Allsoundsoff
+123 Allnotesoff
+
+
+[/CC]
+
+
+# ASSIGN
+# Syntax: POT_NUMBER TYPE:VALUE or POT_NUMBER TYPE:VALUE DEFAULT=DEFAULT_VALUE
+# POT_NUMBER must be between 1 and 8
+# TYPE can be "CC", "PB" (pitchbend), "AT" (aftertouch), "CV", "NRPN", or "NULL" (this won't assign the pot).
+# Non explicitly-defined pots will be considered "NULL"
+# VALUE VALIDATION
+#### For CC: Value must be a valid number between 0 and 119
+#### For PB and AT, any text after the TYPE will be ignored
+#### For CV, value must be between 1 and 4
+#### For NRPN, value must be MSB:LSB:DEPTH, with both lsb & msb bebtween 0 and 127, and DEPTH being either 7 or 14
+# DEFAULT VALUE
+#### For CC: DEFAULT_VALUE must be a valid number between 0 and 127
+#### For PB: DEFAULT_VALUE must be a valid number between 0 and 16383
+#### For NRPN: DEFAULT_VALUE must be a valid number, either between 0 and 127 (for 7 bit NRPNs) or between 0 and 16383 (for 14bit NRPNs)
+#### For CV: DEFAULT_VALUE must be either a valid number between 0 and 65535, or a voltage between -5V and 5V, e.g. "-4.25V" or "1.7V"
+#### Please note default value will be ignored for PB and AT messages.
+[ASSIGN]
+
+[/ASSIGN]
+
+
+# AUTOMATION
+# Syntax: TYPE:VALUE
+# TYPE can be "CC", "PB" (pitchbend), "AT" (aftertouch), "CV", or "NRPN"
+# VALUE VALIDATION
+#### For CC: Value must be a valid number between 0 and 119
+#### For PB and AT, any text after the TYPE will be ignored
+#### For CV, value must be between 1 and 4
+#### For NRPN, value must be MSB:LSB:DEPTH, with both lsb & msb bebtween 0 and 127, and DEPTH being either 7 or 14
+[AUTOMATION]
+
+[/AUTOMATION]
+
+
+# This section will be readable from Hapax.
+[COMMENT]
+time travel is real!
+[/COMMENT]
+

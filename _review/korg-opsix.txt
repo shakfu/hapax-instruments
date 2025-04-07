@@ -1,0 +1,173 @@
+VERSION 1 # Currently, this should only be 1.
+
+# Supports all alphanumeric ASCII, and ' ', '_', '-', '+' - can also be NULL
+TRACKNAME OPSIX
+
+# Can be POLY, DRUM, MPE, or NULL
+TYPE POLY
+
+# Can be A, B, C, D, USBD, USBH, CVGx (x between 1&4), CVx, Gx, or NULL
+OUTPORT NULL
+
+# Can be x (between 1-16), or NULL -- this is ignored if output port is not MIDI
+OUTCHAN NULL
+
+# Can be NONE, ALLACTIVE, A, B, USBH, USBD, CVG, or NULL
+INPORT ALLACTIVE
+
+# Can be x (between 1-16), ALL, or NULL. This definition will be ignored if INPORT is NONE, ALLACTIVE or CVG
+INCHAN NULL
+
+# DRUMLANES
+# Syntax: ROW:TRIG:CHAN:NOTENUMBER NAME
+# ROW must be between 1 and 8
+# TRIG can be between 0 and 127, or NULL
+# CHAN can be a number between 1 and 16, Gx, CVx, CVGx (x between 1 and 4), or NULL
+# NOTENUMBER can be between 0 and 127, or NULL
+# NAME supports all alphanumeric ASCII, and ' ', '_', '-', '+' - can also be NULL
+# Please note this section will be discarded for tracks which are not DRUM tracks
+[DRUMLANES]
+[/DRUMLANES]
+
+
+# PC
+# Syntax: NUMBER NAME
+# number must be either:
+#   - A number (for simple PC)
+#   - Three numbers, delimited by ':', which represent PC:MSB:LSB. You can put 'NULL' to not set the MSB/LSB.
+# PC must be between 1...128
+# MSB/LSB must be between 0...127
+[PC]
+1:0:0 Patch 001
+1:0:1 Patch 101
+1:0:2 Patch 201
+1:0:3 Patch 301
+1:0:4 Patch 401
+21:0:3 T DETUNE SINE
+22:0:3 T DETUNE SAW
+23:0:3 T UNISON SAW
+24:0:3 T RESO NOISE
+25:0:3 T CHORD HIT
+26:0:3 T VELO FM
+27:0:3 T 2OP FM
+28:0:3 T HARM MOD
+29:0:3 T MOD FM
+30:0:3 T PULSE WIDTH
+31:0:3 T RING MOD
+32:0:3 T FM SYNC
+33:0:3 T WAVEFOLD SYNC
+34:0:3 T WAVEFOLDER
+35:0:3 T FILTER FM
+36:0:3 T WAVESHAPE
+37:0:3 T DELAY MOD
+38:0:3 T COMB FLANGER
+39:0:3 T COMB LFO
+40:0:3 T PHASER NOISE
+41:0:3 T EG ADSR
+42:0:3 T PITCH EG PERC
+43:0:3 T RANDOM PAN
+44:0:3 T OP FILTER MONO
+45:0:3 T OP MODE CHECK
+46:0:3 T QUADRA LFOS
+47:0:3 T EFFECT LFO
+48:0:3 T USER FILTER PING
+49:0:3 T C4 KEY SPLIT
+50:0:3 T SEQ KEY TRIG
+[/PC]
+
+
+# CC
+# Syntax: CC_NUMBER NAME or CC_NUMBER:DEFAULT=xx NAME
+# DEFAULT_VALUE must be a valid number between 0 and 127
+[CC]
+70 ALGORITHM
+102 OP1 LVL
+103 OP2 LVL
+104 OP3 LVL
+105 OP4 LVL
+106 OP5 LVL
+107 OP6 LVL
+108 OP1 RATIO
+109 OP2 RATIO
+110 OP3 RATIO
+111 OP4 RATIO
+112 OP5 RATIO
+113 OP6 RATIO
+
+73 ATTACK
+79 DECAY RELEASE
+74 FILTER CUTOFFF
+71 RESONANCE
+
+81 FX1
+82 FX2
+83 FX3
+
+12 UNI CC 12 # Patch level user definable CCs
+13 UNI CC 13
+14 UNI CC 14
+15 UNI CC 15
+16 UNI CC 16
+17 BIP CC 17
+18 BIP CC 18
+19 BIP CC 19
+20 BIP CC 20
+21 BIP CC 21
+
+1 MODWHEEL
+5 GLDETIME
+7 VOLUME
+10 PAN
+11 EXPRESSION
+
+64 DAMPER
+65 GLIDE MODE
+66 SOSTENUTO
+67 SOFT
+[/CC]
+
+
+# NRPN
+# Syntax: "MSB:LSB:DEPTH NAME" or "MSB:LSB:DEPTH:DEFAULT=xx NAME"
+# Lsb & msb should be between 0 and 127
+# DEPTH can be 7 or 14
+# For NRPN: DEFAULT_VALUE must be a valid number, either between 0 and 127 (for 7 bit NRPNs) or between 0 and 16383 (for 14bit NRPNs)
+[NRPN]
+[/NRPN]
+
+
+# ASSIGN
+# Syntax: POT_NUMBER TYPE:VALUE or POT_NUMBER TYPE:VALUE DEFAULT=DEFAULT_VALUE
+# POT_NUMBER must be between 1 and 8
+# TYPE can be "CC", "PB" (pitchbend), "AT" (aftertouch), "CV", "NRPN", or "NULL" (this won't assign the pot).
+# Non explicitly-defined pots will be considered "NULL"
+# VALUE VALIDATION
+#### For CC: Value must be a valid number between 0 and 119
+#### For PB and AT, any text after the TYPE will be ignored
+#### For CV, value must be between 1 and 4
+#### For NRPN, value must be MSB:LSB:DEPTH, with both lsb & msb bebtween 0 and 127, and DEPTH being either 7 or 14
+# DEFAULT VALUE
+#### For CC: DEFAULT_VALUE must be a valid number between 0 and 127
+#### For PB: DEFAULT_VALUE must be a valid number between 0 and 16383
+#### For NRPN: DEFAULT_VALUE must be a valid number, either between 0 and 127 (for 7 bit NRPNs) or between 0 and 16383 (for 14bit NRPNs)
+#### For CV: DEFAULT_VALUE must be either a valid number between 0 and 65535, or a voltage between -5V and 5V, e.g. "-4.25V" or "1.7V"
+#### Please note default value will be ignored for PB and AT messages.
+[ASSIGN]
+[/ASSIGN]
+
+
+# AUTOMATION
+# Syntax: TYPE:VALUE
+# TYPE can be "CC", "PB" (pitchbend), "AT" (aftertouch), "CV", or "NRPN"
+# VALUE VALIDATION
+#### For CC: Value must be a valid number between 0 and 119
+#### For PB and AT, any text after the TYPE will be ignored
+#### For CV, value must be between 1 and 4
+#### For NRPN, value must be MSB:LSB:DEPTH, with both lsb & msb bebtween 0 and 127, and DEPTH being either 7 or 14
+[AUTOMATION]
+[/AUTOMATION]
+
+
+# This section will be readable from Hapax.
+[COMMENT]
+[/COMMENT]
